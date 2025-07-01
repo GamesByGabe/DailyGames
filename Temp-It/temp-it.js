@@ -17,6 +17,11 @@ let RowIndex = 0; // Saves the row/guess the player is on
 // Start the game
 StartGame();
 
+document.getElementById('play-again-btn').addEventListener("click", () => {
+    document.getElementById('game-message').classList.add('hidden');
+    StartGame();
+});
+
 // Listen for keyboard letters to be pressed
 document.querySelectorAll("#keyboard button").forEach(button => {
     button.addEventListener("click", () => {
@@ -267,7 +272,7 @@ function ApplyTemperaturePattern() {
         const Letter = button.getAttribute('data-key').toUpperCase();
 
         // Remove any existing temperature classes
-        button.classList.remove('chosen', 'hot', 'warm', 'cool', 'cold');
+        button.classList.remove('chosen', 'hot', 'warm', 'cool', 'cold', 'guess');
         button.classList.add('hidden')
 
         // Remove 'hidden' if already revealed
@@ -392,23 +397,20 @@ function CheckGuessCorrect() {
         if (CurrentGuess[i] !== ChosenWordLetters[i]) {
             // Move to next guess
             ColumnIndex = 0;
-            
             RowIndex += 1;
-            if (RowIndex > MAX_GUESSES) {
-                RowIndex = MAX_GUESSES;
+
+            if (RowIndex >= MAX_GUESSES) {
+            GameOver(); // ✅ Use your function here
+            } else {
                 CurrentGuess = [];
-                GameOver();
-
-                return false;
+                ApplyTemperaturePattern();
             }
-
-            CurrentGuess = [];
-            ApplyTemperaturePattern()
 
             return false;
         }
     }
 
+    Success();
     return true;
 }
 
@@ -427,4 +429,17 @@ function UpdateActiveCell() {
     if (currentCell) {
         currentCell.classList.add('active');
     }
+}
+
+function GameOver() {
+    ShowMessage("Game Over");
+}
+
+function Success() {
+    ShowMessage("You Win!");
+}
+
+function ShowMessage(title, text) {
+  document.getElementById('message-title').textContent = title;
+  document.getElementById('game-message').classList.remove('hidden');
 }

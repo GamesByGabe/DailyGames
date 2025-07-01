@@ -56,6 +56,55 @@ body {
   background-color: #4DCCBD;
 }
 
+/* Game message box */
+.message-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.message-box.hidden {
+  display: none;
+}
+
+.message-content {
+  background-color: var(--SoftDark);
+  padding: 30px 40px;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.message-content h2 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+.message-content button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--Cool);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.message-content button:hover {
+  background-color: var(--Chosen);
+}
+
+
 /* Grid */
 #grid {
     display: flex;
@@ -71,6 +120,16 @@ body {
 }
 
 .cell {
+  color: var(--Keys);
+  text-shadow:
+    -2px -2px 0 var(--Dark),
+     2px -2px 0 var(--Dark),
+    -2px  2px 0 var(--Dark),
+     2px  2px 0 var(--Dark),
+    -2px  0px 0 var(--Dark),
+     2px  0px 0 var(--Dark),
+     0px -2px 0 var(--Dark),
+     0px  2px 0 var(--Dark);
   width: 50px;
   height: 50px;
   border: 2px solid var(--Light);
@@ -113,6 +172,12 @@ body {
 }
 
 /* Buttons */
+#play-again-btn {
+  width: 100px;
+  height: 60px;
+  background-color: var(--Chosen);
+}
+
 button {
   font-size: 16px;
   font-weight: bold;
@@ -153,6 +218,7 @@ button.hot    { background-color: var(--Hot); }
 button.warm   { background-color: var(--Warm); }
 button.cool   { background-color: var(--Cool); }
 button.cold   { background-color: var(--Cold); }
+button.guess  { background-color: var(--SoftDark); }
 
 /* Keyboard */
 #keyboard {
