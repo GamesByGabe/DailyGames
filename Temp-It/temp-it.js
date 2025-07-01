@@ -119,10 +119,10 @@ function GenerateGrid() {
 
 // Picks todays word from the list of possible words based on todays date
 function PickTodaysWord() {
-    const StartDate = new Date('2001-03-14');
+    const StartDate = new Date(Date.UTC(2001, 2, 14));
     const Now = new Date();
 
-    const diffInDays = Math.floor((Now - StartDate) / (1000 * 60 * 60 * 24));
+    const diffInDays = Math.floor((Now.getTime() - StartDate.getTime()) / (1000 * 60 * 60 * 24));
     const Index = diffInDays % POSSIBLEWORDS.length;
 
     return POSSIBLEWORDS[Index];

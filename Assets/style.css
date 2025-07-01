@@ -19,6 +19,7 @@
 h1 {
       font-size: 2.5rem;
       margin-bottom: 30px;
+      color: var(--Light);
     }
 
 /* Body */
@@ -26,7 +27,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background: var(--Dark);
   margin: 0;
-  padding: 20px;
+  padding: min(1em, 8%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -109,36 +110,29 @@ body {
 #grid {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-top: 30px;
+    gap: 0.25em;
 }
 
 .grid-row {
     display: flex;
     justify-content: center;
-    gap: 5px;
+    gap: 0.25em;
 }
 
 .cell {
   color: var(--Keys);
-  text-shadow:
-    -2px -2px 0 var(--Dark),
-     2px -2px 0 var(--Dark),
-    -2px  2px 0 var(--Dark),
-     2px  2px 0 var(--Dark),
-    -2px  0px 0 var(--Dark),
-     2px  0px 0 var(--Dark),
-     0px -2px 0 var(--Dark),
-     0px  2px 0 var(--Dark);
-  width: 50px;
-  height: 50px;
-  border: 2px solid var(--Light);
-  border-radius: 4px;
+  width: min(17dvw, 17dvh);
+  height: min(17dvw, 17dvh);
+  border: 0.1em solid var(--Light);
   text-align: center;
-  line-height: 50px;
-  font-size: 24px;
+  font-size: 3rem;
   transition: background 0.3s ease, transform 0.1s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .cell.active {
@@ -179,28 +173,26 @@ body {
 }
 
 button {
-  font-size: 16px;
+  flex: 1 1 0;
+  font-family: 'nyt-franklin';
   font-weight: bold;
-  padding: 12px;
-  width: 44px;
-  height: 60px;
-  border: none;
-  border-radius: 8px;
-  background-color: #eee;
+  aspect-ratio: 2 / 3;
+  margin: 0.1em;
+  max-width: 2.25em;
+  max-height: 4em;
+  border-radius: 1px;
   cursor: pointer;
-  transition: 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: var(--Keys);
+  color: var(--Darker);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
 }
 
 button.wide {
-  width: 70px;
-}
-
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 20px 0;
+  max-width: 5em;
 }
 
 button:hover {
@@ -222,29 +214,17 @@ button.guess  { background-color: var(--SoftDark); }
 
 /* Keyboard */
 #keyboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 30px;
-  padding: 0 10px;
   width: 100%;
-  box-sizing: border-box;
+  margin: 0.5em 0;
+  gap: 0.1em;
+  user-select: none;
 }
 
 .row {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
   width: 100%;
-  box-sizing: border-box;
-}
-
-button {
-  flex: 1 0 8%; /* Each key can shrink/grow but tries to stay ~8% wide */
-  max-width: 44px;
-  min-width: 32px;
-  height: 50px;
-  font-size: 1rem;
+  height: 3.5em;
+  gap: 0.1em;
+  touch-action: manipulation;
 }
