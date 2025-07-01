@@ -15,6 +15,12 @@
   --SoftLight: #EFEFEF;
 }
 
+/* Header */
+h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
 /* Body */
 body {
   font-family: 'Segoe UI', sans-serif;
@@ -24,6 +30,30 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* Home Page */
+.game-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  margin: auto;
+}
+
+.game-link {
+  display: block;
+  padding: 15px 25px;
+  font-size: 1.2rem;
+  background-color: #2374AB;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.game-link:hover {
+  background-color: #4DCCBD;
 }
 
 /* Grid */
@@ -139,49 +169,3 @@ button.cold   { background-color: var(--Cold); }
   gap: 8px;
 }
 
-#message-box {
-  color: white;
-  background: rgba(0,0,0,0.8);
-  padding: 20px;
-  border-radius: 10px;
-  font-size: 1.5rem;
-  margin-top: 20px;
-}
-
-/* Debug Tools */
-#start-game, #next-letter {
-  font-size: 18px;
-  font-weight: 600;
-  padding: 14px 28px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  color: white;
-  display: inline-block;
-  white-space: nowrap;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: background 0.3s ease, transform 0.1s ease;
-  height: auto;
-  width: auto;
-  min-width: 160px;
-}
-
-#start-game {
-  background: linear-gradient(145deg, #0077cc, #005fa3);
-}
-
-#next-letter {
-  background: linear-gradient(145deg, #28a745, #218838);
-}
-
-#start-game:hover,
-#next-letter:hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-}
-
-#start-game:active,
-#next-letter:active {
-  transform: scale(0.97);
-}
