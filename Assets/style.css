@@ -228,3 +228,28 @@ button.guess  { background-color: var(--SoftDark); }
   gap: 0.1em;
   touch-action: manipulation;
 }
+
+.dragging {
+    opacity: 0.5;
+    border: 2px dashed #333;
+}
+
+.drag-over {
+    background-color: #cceeff;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ccc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: background 0.2s ease;
+}
+
+.drag-over-top { border-top: 3px solid blue; }
+.drag-over-bottom { border-bottom: 3px solid blue; }
+.drag-over-left { border-left: 3px solid blue; }
+.drag-over-right { border-right: 3px solid blue; }

@@ -3,9 +3,9 @@ import { VALIDWORDS } from '../Dictionary/validwords.js';
 import { POSSIBLEWORDS } from '../Dictionary/possiblewords.js';
 
 // Constants
-const WORD_LENGTH = 5;
-const MAX_GUESSES = 6;
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const WORD_LENGTH = 5; // Sets the length of the words to be guessed in the grid
+const MAX_GUESSES = 6; // Sets the number of possible guesses before failing the game
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''); // Used to go through all letters in the keyboard
 
 // Global Variables
 let Variations = []; // Saves the temperature maps for each column/letter
@@ -17,8 +17,12 @@ let RowIndex = 0; // Saves the row/guess the player is on
 // Start the game
 StartGame();
 
+// Listen for play again button to reset game
 document.getElementById('play-again-btn').addEventListener("click", () => {
+    // Hide any messages on screen
     document.getElementById('game-message').classList.add('hidden');
+
+    // Restart game
     StartGame();
 });
 
@@ -26,10 +30,11 @@ document.getElementById('play-again-btn').addEventListener("click", () => {
 document.querySelectorAll("#keyboard button").forEach(button => {
     button.addEventListener("click", () => {
         if (!button.getAttribute('data-key')) return;
-
+        // Get the letter which was pressed and insert it into the grid
         const Letter = button.getAttribute('data-key').toUpperCase();
-
         InsertLetter(Letter);
+
+        // Update game state to current ColumnIndex
         ApplyTemperaturePattern();
         UpdateActiveCell();
     });
@@ -37,14 +42,20 @@ document.querySelectorAll("#keyboard button").forEach(button => {
 
 // Listen for keyboard 'Backspace' to be pressed
 document.getElementById('Backspace').addEventListener("click", () => {
+    // Remove the last or current indexed letter
     RemoveLetter();
+
+    // Update game state to current ColumnIndex
     ApplyTemperaturePattern();
     UpdateActiveCell();
 });
 
 // Listen for keyboard 'Enter' to be pressed
 document.getElementById('Enter').addEventListener("click", () => { 
-    if (CheckGuessValid() === true) CheckGuessCorrect();
+    // Check if guess matches chosen word of the day
+    CheckGuessCorrect();
+    
+    // Update game state to current ColumnIndex
     ApplyTemperaturePattern();
     UpdateActiveCell();
 });
@@ -57,7 +68,6 @@ function StartGame() {
     CurrentGuess = [];
     ColumnIndex = 0;
     RowIndex = 0;
-
 
     // Generate Grid
     GenerateGrid();
@@ -78,11 +88,12 @@ function StartGame() {
         };
     }
 
-    // Apply temperature maps
+    // Set the temperature maps for each letter in the chosen word
     for (let i = 0; i < Variations.length; i++) {
         Variations[i] = SetTemperaturePattern(i);
     };
 
+    // Apply the starting pattern and active cell
     ApplyTemperaturePattern();
     UpdateActiveCell();
 }
@@ -131,10 +142,8 @@ function PickTodaysWord() {
 // Applies a temperature pattern to a given variation
 function SetTemperaturePattern(VariationIndex) {
     const ChosenLetter = ChosenWordLetters[VariationIndex];
-    const Position = FindPosition(ChosenLetter);
     const Variation = Variations[VariationIndex];
-    
-    if (!Position) return Variations[VariationIndex];
+    const Rows = document.querySelectorAll(".row");
 
     // Pattern for adjacent keys (hot)
     const OffsetPatternsHot = {
@@ -206,6 +215,24 @@ function SetTemperaturePattern(VariationIndex) {
         ]
     };
 
+    // Find the position of the chosen letter
+    let Position = null;
+    for (let r = 0; r < Rows.length; r++) {
+        const buttons = Rows[r].querySelectorAll("button");
+        
+        for (let c = 0; c < buttons.length; c++) {
+            // Check if the letter is equal to chosen letter
+            if (buttons[c].dataset.key === ChosenLetter) {
+                // Return row and column if chosen letter is found then exit loop
+                Position = { row: r, col: c };
+                break;
+            }
+        }
+        if (Position) break;
+    }
+    if (!Position) return Variations[VariationIndex];
+
+    // Apply the temperature to each key based on their relative position around the chosen letter
     [
     { pattern: OffsetPatternsHot[Position.row], className: 'hot' },
     { pattern: OffsetPatternsWarm[Position.row], className: 'warm' },
@@ -227,6 +254,7 @@ function SetTemperaturePattern(VariationIndex) {
         });
     });
 
+    // Set all left over keys to cold
     ALPHABET.forEach(l => {
     if (
         !Variation.chosen.has(l) &&
@@ -239,28 +267,6 @@ function SetTemperaturePattern(VariationIndex) {
     });
 
     return Variation;
-}
-
-// Finds the position of a letter on the keyboard
-function FindPosition(Letter) {
-    const rows = document.querySelectorAll(".row");
-
-    for (let r = 0; r < rows.length; r++) {
-        const buttons = rows[r].querySelectorAll("button");
-        
-        for (let c = 0; c < buttons.length; c++) {
-            
-            // Check if the letter is equal to the one pressed
-            if (buttons[c].dataset.key === Letter) {
-                
-                // Return row and column if key is found
-                return { row: r, col: c };
-            }
-        }
-    }
-
-    // Return nothing if key is not found
-    return null;
 }
 
 // Applies the revealed temperature pattern to the keyboard
@@ -335,13 +341,23 @@ function InsertLetter(Letter) {
     const Row = document.querySelector(`.grid-row[data-row='${RowIndex}']`);
     const Cell = Row.querySelector(`.cell[data-col='${ColumnIndex}']`);
 
+    // Make sure the cell is empty
     if (Cell.textContent.trim() === "") {
         CurrentGuess[ColumnIndex] = Letter;
-
         Cell.textContent = Letter;
-        ColumnIndex += 1;
-        if (ColumnIndex > WORD_LENGTH - 1) ColumnIndex = WORD_LENGTH - 1;
 
+        // Find next empty cell to move to
+        for (let c = ColumnIndex + 1; c < WORD_LENGTH; c++) {
+            let NextCell = Row.querySelector(`.cell[data-col='${c}']`);
+
+            if (NextCell && NextCell.textContent.trim() === "") {
+                ColumnIndex = c;
+                return true;
+            }
+        }
+
+        // Go to last column if no empty cell was found
+        ColumnIndex = WORD_LENGTH - 1;
         return true;
     }
 
@@ -353,81 +369,90 @@ function RemoveLetter() {
     const Row = document.querySelector(`.grid-row[data-row='${RowIndex}']`);
     let Cell = Row.querySelector(`.cell[data-col='${ColumnIndex}']`);
     
+    // If the active cell is not empty, clear it
     if (Cell && Cell.textContent.trim() !== "") {
         CurrentGuess[ColumnIndex] = "";
         Cell.textContent = "";
 
-        return true;
+        return;
     }
 
+    // Move back a column unless already at column 0
     ColumnIndex -= 1;
     if (ColumnIndex < 0) {
         ColumnIndex = 0;
-        return false;
+
+        return;
     }
 
+    // Clear the new active cell
     Cell = Row.querySelector(`.cell[data-col='${ColumnIndex}']`);
     if (Cell) {
         CurrentGuess[ColumnIndex] = "";
         Cell.textContent = "";
 
-        return true;
+        return;
     }
 
-    return false;
-}
-
-// Check if the current guess is a valid worda
-function CheckGuessValid() {
-    const Guess = CurrentGuess.join('').toLowerCase();
-    return VALIDWORDS.includes(Guess);
+    return;
 }
 
 // Check if the current guess is correct
 function CheckGuessCorrect() {
-    for (let i = 0; i < Variations.length; i++) {
-        const Variation = Variations[i];
+    // Check if guess is valid
+    const Guess = CurrentGuess.join('').toLowerCase();
+    if (VALIDWORDS.includes(Guess)) {
 
-        Variation.revealed.add(CurrentGuess[i]); 
-    }
-
-    ApplyGridTemperaturePattern();
-
-    for (let i = 0; i < CurrentGuess.length; i++) {
-        if (CurrentGuess[i] !== ChosenWordLetters[i]) {
-            // Move to next guess
-            ColumnIndex = 0;
-            RowIndex += 1;
-
-            if (RowIndex >= MAX_GUESSES) {
-            GameOver(); // ✅ Use your function here
-            } else {
-                CurrentGuess = [];
-                ApplyTemperaturePattern();
-            }
-
-            return false;
+        // Add guessed letters to revealed set so their color is revealed
+        for (let i = 0; i < Variations.length; i++) {
+            const Variation = Variations[i];
+            Variation.revealed.add(CurrentGuess[i]); 
         }
+
+        // Apply the temperature pattern to the gird before updating row index
+        ApplyGridTemperaturePattern();
+
+        // Check if guess matches chosen word
+        for (let i = 0; i < CurrentGuess.length; i++) {
+            if (CurrentGuess[i] !== ChosenWordLetters[i]) {
+                // Move to next guess if guess is not the chosen word
+                ColumnIndex = 0;
+                RowIndex += 1;
+
+                // Check if all guesses have been used
+                if (RowIndex >= MAX_GUESSES) {
+                    GameOver();
+                    return;
+                } else {
+                    CurrentGuess = [];
+                    return;
+                }
+            }
+        }
+
+        // Guess matches chosen word
+        Success();
+        return;
     }
 
-    Success();
-    return true;
+    // Guess is not a valid word
+    return;
 }
 
 // Updates the current active cell
 function UpdateActiveCell() {
-    // Remove existing active cells
+    // Remove existing active cell
     document.querySelectorAll('.cell.active').forEach(cell => {
         cell.classList.remove('active');
     });
 
     // Highlight the new active cell
-    const currentRow = document.querySelector(`.grid-row[data-row='${RowIndex}']`);
-    if (!currentRow) return;
+    const CurrentRow = document.querySelector(`.grid-row[data-row='${RowIndex}']`);
+    if (!CurrentRow) return;
 
-    const currentCell = currentRow.querySelector(`.cell[data-col='${ColumnIndex}']`);
-    if (currentCell) {
-        currentCell.classList.add('active');
+    const CurrentCell = CurrentRow.querySelector(`.cell[data-col='${ColumnIndex}']`);
+    if (CurrentCell) {
+        CurrentCell.classList.add('active');
     }
 }
 
@@ -439,7 +464,7 @@ function Success() {
     ShowMessage("You Win!");
 }
 
-function ShowMessage(title, text) {
+function ShowMessage(title) {
   document.getElementById('message-title').textContent = title;
   document.getElementById('game-message').classList.remove('hidden');
 }
