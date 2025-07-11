@@ -8,16 +8,31 @@
 </head>
 <body>
   <h1>Temp-It</h1>
-    
+
+  <button id="legend-button" class="legend-button">❓Legend</button>
+
+  <!-- Message Box -->
+  <div id="message-box" class="message-box hidden">
+      <h2 id="message-content"></h2>
+  </div>
+  
+  <!-- Legend Box -->
+  <div id="legend-box" class="legend-box hidden">
+    <div class="legend-box">
+      <button id="close-legend">X</button>
+      <h2 class="legend-header">Temperature Legend</h2>
+      <ul>
+        <li><span class="legend-color chosen"></span> <strong>Correct:</strong> The Correct letter</li>
+        <li><span class="legend-color hot"></span> <strong>Hot:</strong> Very close key to the correct one</li>
+        <li><span class="legend-color warm"></span> <strong>Warm:</strong> Near the correct key</li>
+        <li><span class="legend-color cool"></span> <strong>Cool:</strong> Somewhat far from the correct key</li>
+        <li><span class="legend-color cold"></span> <strong>Cold:</strong> Far from the correct key</li>
+      </ul>
+    </div>
+  </div>
+  
   <!-- Grid Display -->
   <div id="grid"></div>
-
-  <div id="game-message" class="message-box hidden">
-  <div class="message-content">
-    <h2 id="message-title">Game Over</h2>
-    <button id="play-again-btn">Play Again</button>
-  </div>
-</div>
 
   <!-- Keyboard Display -->
   <div id="keyboard" class="keyboard">
@@ -50,7 +65,7 @@
 
     <!-- Bottom Row -->
     <div class="row" data-row="2">
-      <button id="Enter" class="wide">Enter</button>
+      <button id="enter"><span>Enter</span></button>
       <button data-key="Z">Z</button>
       <button data-key="X">X</button>
       <button data-key="C">C</button>
@@ -58,7 +73,7 @@
       <button data-key="B">B</button>
       <button data-key="N">N</button>
       <button data-key="M">M</button>
-      <button id="Backspace" class="wide">←</button>
+      <button id="backspace">←</button>
     </div>
   </div>
   <script type="module" src="Temp-It/temp-it.js"></script>

@@ -17,14 +17,16 @@ let RowIndex = 0; // Saves the row/guess the player is on
 // Start the game
 StartGame();
 
-// Listen for play again button to reset game
-document.getElementById('play-again-btn').addEventListener("click", () => {
-    // Hide any messages on screen
-    document.getElementById('game-message').classList.add('hidden');
-
-    // Restart game
-    StartGame();
+// Listen for legend to be pressed
+document.getElementById('legend-button').addEventListener('click', () => {
+    document.getElementById('legend-box').classList.remove('hidden');
 });
+
+// Listen for close legend to be pressed
+document.getElementById('close-legend').addEventListener('click', () => {
+    document.getElementById('legend-box').classList.add('hidden');
+});
+
 
 // Listen for keyboard letters to be pressed
 document.querySelectorAll("#keyboard button").forEach(button => {
@@ -41,7 +43,7 @@ document.querySelectorAll("#keyboard button").forEach(button => {
 });
 
 // Listen for keyboard 'Backspace' to be pressed
-document.getElementById('Backspace').addEventListener("click", () => {
+document.getElementById('backspace').addEventListener("click", () => {
     // Remove the last or current indexed letter
     RemoveLetter();
 
@@ -51,7 +53,7 @@ document.getElementById('Backspace').addEventListener("click", () => {
 });
 
 // Listen for keyboard 'Enter' to be pressed
-document.getElementById('Enter').addEventListener("click", () => { 
+document.getElementById('enter').addEventListener("click", () => { 
     // Check if guess matches chosen word of the day
     CheckGuessCorrect();
     
@@ -320,18 +322,23 @@ function ApplyGridTemperaturePattern() {
         void Cell.offsetWidth;
 
         if (Variation.revealed.has(Letter)) {
-            // Apply correct temperature class
-            if (Variation.chosen.has(Letter)) {
-                Cell.classList.add('chosen');
-            } else if (Variation.hot.has(Letter)) {
-                Cell.classList.add('hot');
-            } else if (Variation.warm.has(Letter)) {
-                Cell.classList.add('warm');
-            } else if (Variation.cool.has(Letter)) {
-                Cell.classList.add('cool');
-            } else if (Variation.cold.has(Letter)) {
-                Cell.classList.add('cold');
-            }
+            const delay = i * 300 + RowIndex * 50; // in ms
+
+            setTimeout(() => {
+                if (Variation.chosen.has(Letter)) {
+                    Cell.classList.add('chosen');
+                } else if (Variation.hot.has(Letter)) {
+                    Cell.classList.add('hot');
+                } else if (Variation.warm.has(Letter)) {
+                    Cell.classList.add('warm');
+                } else if (Variation.cool.has(Letter)) {
+                    Cell.classList.add('cool');
+                } else if (Variation.cold.has(Letter)) {
+                    Cell.classList.add('cold');
+                }
+
+                Cell.classList.add('reveal'); // trigger animation if needed
+            }, delay);
         }
     }
 }
@@ -436,6 +443,10 @@ function CheckGuessCorrect() {
     }
 
     // Guess is not a valid word
+    setTimeout(() => {
+        HideMessage();
+    }, 1250); 
+    ShowMessage("Not in word list");
     return;
 }
 
@@ -465,6 +476,12 @@ function Success() {
 }
 
 function ShowMessage(title) {
-  document.getElementById('message-title').textContent = title;
-  document.getElementById('game-message').classList.remove('hidden');
+    document.getElementById('message-content').textContent = title;
+    document.getElementById('message-box').classList.remove('hidden');
+    document.getElementById('message-box').classList.add('reveal');
+}
+
+function HideMessage() {
+    document.getElementById('message-box').classList.remove('reveal');
+    document.getElementById('message-box').classList.add('hidden');
 }
