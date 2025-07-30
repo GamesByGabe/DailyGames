@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temp-It</title>
+  <link rel="stylesheet" href="../assets/shared-css/style.css">
+  <link rel="stylesheet" href="../css/temp-it.css">
+</head>
+<body>
+  <!-- Top Page Banner -->
+  <div id="banner">
+    <!-- Info Box -->
+    <button id="info-button" class="banner-info">?</button>
+      <div id="info-box" class="collapsed">
+        <div class="demo-container">
+          <h2 class="info-header">How to play!</h2>
+          <button id="close-button">X</button>
+          <ul class="info-rules">
+            <li>Guess the daily word within 6 tries</li>
+            <li>Each guess made must be a valid 5-letter word</li>
+            <li>Each letter used will change colors to show how close it is to the right letter on the keyboard</li>
+          </ul>
+          <!-- Grid Display For Info Box -->
+          <div id="example-grid" class="info-grid">
+            <div class="grid-row" data-row="6">
+              <div class="cell chosen active-demo" data-col="0">G</div>
+              <div class="cell chosen" data-col="1">A</div> 
+              <div class="cell chosen" data-col="2">M</div> 
+              <div class="cell chosen" data-col="3">E</div> 
+              <div class="cell chosen" data-col="4">S</div> 
+            </div>
+          </div>
+          <!-- Keyboard Display For Info Box -->
+          <div id="example-keyboard" class="info-keyboard">
+            <div class="info-keyboard-row" data-row="0"> 
+              <div class="key" data-key="Q">Q</div> 
+              <div class="key" data-key="W">W</div>
+              <div class="key" data-key="E">E</div>
+              <div class="key" data-key="R">R</div>
+              <div class="key" data-key="T">T</div>
+              <div class="key" data-key="Y">Y</div>
+              <div class="key" data-key="U">U</div>
+              <div class="key" data-key="I">I</div>
+              <div class="key" data-key="O">O</div>
+              <div class="key" data-key="P">P</div>
+            </div>
+            <div class="info-keyboard-row" data-row="1"> 
+              <div class="spacer"></div>
+              <div class="key" data-key="A">A</div>
+              <div class="key" data-key="S">S</div>
+              <div class="key" data-key="D">D</div>
+              <div class="key" data-key="F">F</div>
+              <div class="key" data-key="G">G</div>
+              <div class="key" data-key="H">H</div>
+              <div class="key" data-key="J">J</div>
+              <div class="key" data-key="K">K</div>
+              <div class="key" data-key="L">L</div>
+              <div class="spacer"></div>
+            </div>
+            <div class="info-keyboard-row" data-row="2"> 
+              <div class="wide-key" data-key="ENTER"><span>Enter</span></div>
+              <div class="key" data-key="Z">Z</div>
+              <div class="key" data-key="X">X</div>
+              <div class="key" data-key="C">C</div>
+              <div class="key" data-key="V">V</div>
+              <div class="key" data-key="B">B</div>
+              <div class="key" data-key="N">N</div>
+              <div class="key" data-key="M">M</div>
+              <div class="wide-key" data-key="BACKSPACE"><img src="../assets/icons/backspace.svg"></div> 
+            </div>
+          </div>
+          <!-- Temperature Pattern Legend -->
+          <ul class="info-color-list">
+            <li><span class="info-color chosen"></span> <strong>Correct:</strong> The correct letter</li>
+            <li><span class="info-color hot"></span> <strong>Hot:</strong> Next to the correct letter</li>
+            <li><span class="info-color warm"></span> <strong>Warm:</strong> Close to the correct letter</li>
+            <li><span class="info-color cool"></span> <strong>Cool:</strong> Near the correct letter</li>
+            <li><span class="info-color cold"></span> <strong>Cold:</strong> Far from the correct letter</li>
+          </ul>
+        </div>
+      </div>
+    <!-- Game Title -->
+    <div id="game-title" class="banner-title"></div>
+    <!-- Game Select -->
+    <button id="menu-button" class="banner-menu">☰</button>
+  </div>
+
+  <!-- Message Box -->
+  <div id="message-box" class="message-box hidden">
+      <h2 id="message-content"></h2>
+  </div>
+  
+  <!-- Grid Display -->
+  <div id="grid"></div>
+
+  <!-- Keyboard Display -->
+  <div id="keyboard" class="keyboard">
+    <!-- Top Row -->
+    <div class="row" data-row="0">
+        <button class="key" data-key="Q">Q</button>
+        <button class="key" data-key="W">W</button>
+        <button class="key" data-key="E">E</button>
+        <button class="key" data-key="R">R</button>
+        <button class="key" data-key="T">T</button>
+        <button class="key" data-key="Y">Y</button>
+        <button class="key" data-key="U">U</button>
+        <button class="key" data-key="I">I</button>
+        <button class="key" data-key="O">O</button>
+        <button class="key" data-key="P">P</button>
+    </div>
+    <!-- Middle Row -->
+    <div class="row" data-row="1">
+      <div class="spacer"></div>
+      <button class="key" data-key="A">A</button>
+      <button class="key" data-key="S">S</button>
+      <button class="key" data-key="D">D</button>
+      <button class="key" data-key="F">F</button>
+      <button class="key" data-key="G">G</button>
+      <button class="key" data-key="H">H</button>
+      <button class="key" data-key="J">J</button>
+      <button class="key" data-key="K">K</button>
+      <button class="key" data-key="L">L</button>
+      <div class="spacer"></div>
+    </div>
+    <!-- Bottom Row -->
+    <div class="row" data-row="2">
+      <button id="enter" class="wide-key" data-key="ENTER"><span>Enter</span></button>
+      <button class="key" data-key="Z">Z</button>
+      <button class="key" data-key="X">X</button>
+      <button class="key" data-key="C">C</button>
+      <button class="key" data-key="V">V</button>
+      <button class="key" data-key="B">B</button>
+      <button class="key" data-key="N">N</button>
+      <button class="key" data-key="M">M</button>
+      <button id="backspace" class="wide-key" data-key="BACKSPACE"><img src="../assets/icons/backspace.svg"></button>
+
+    </div>
+  </div>
+  <script type="module" src="../js/temp-it.js"></script>
+  <script type="module" src="../assets/shared-js/banner.js"></script>
+</body>
+</html>

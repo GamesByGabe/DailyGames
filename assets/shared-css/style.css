@@ -1,0 +1,210 @@
+:root {
+  /* Other Colors */
+  --RichBlack:  #171A21; /* Background */
+  --BlushWhite: #EEE5E9; /* Grid, Text */
+  --SoftBlack:  #272932; /* Key Backgrounds */
+  --SoftWhite:  #D4D2D5; /* */
+  --SoftGray: #818384;
+
+  /* Fonts */
+  --Primary: 'Segoe UI';
+
+  /* Variable Gaps */
+  --GoldenRatio: 1.61803;
+
+  --XS_Margin: 0.25vh;
+  --S_Margin: calc(Var(--XS_Margin) * var(--GoldenRatio));
+  --M_Margin: calc(Var(--S_Margin) * var(--GoldenRatio));
+  --L_Margin: calc(Var(--M_Margin) * var(--GoldenRatio));
+  --XL_Margin: calc(Var(--L_Margin) * var(--GoldenRatio));
+  --XXL_Margin: calc(Var(--XL_Margin) * var(--GoldenRatio));
+
+  --XS_Font: 1vh;
+  --S_Font: calc(Var(--XS_Font) * var(--GoldenRatio));
+  --M_Font: calc(Var(--S_Font) * var(--GoldenRatio));
+  --L_Font: calc(Var(--M_Font) * var(--GoldenRatio));
+}
+
+/* Body */
+body {
+  color: var(--BlushWhite);
+  font-family: var(--Primary);
+
+  margin: 0;
+  padding: 0;
+  background-color: var(--RichBlack);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Banner */
+#banner {
+  font-size: var(--L_Font);
+
+  margin: 0;
+  padding: 0;
+  border-bottom: 0.25vh solid var(--BlushWhite);
+  width: 100%;
+  height: 6vh;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.banner-info {
+  color: inherit;
+  font-size: inherit;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  aspect-ratio: 1 / 1;
+  height: 100%;
+}
+.banner-timer {
+  color: inherit;
+  font-size: inherit;
+
+  background: transparent;
+
+  margin-left: 5vw;
+  padding: 0;
+  border: none;
+  width: 30vw;
+  height: 100%;
+}
+.banner-title {
+  color: inherit;
+  font-size: inherit;
+  font-weight: bold;
+
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 35vw;
+  margin-left: auto;
+  padding-right: 1vw;
+
+  text-align: end;
+}
+.banner-menu {
+  color: inherit;
+  font-size: inherit;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  aspect-ratio: 1 / 1;
+  height: 100%;
+}
+
+/* Info Box */
+#info-box.collapsed {
+  display: none;
+}
+#info-box {
+  color: inherit;
+  font-size: var(--M_Font);
+
+  background-color: var(--RichBlack);
+
+  margin: 0.25vh; /* Shows the bottom border of the #banner */
+  padding: var(--L_Margin);
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100%;
+
+  display: flex; /* Make sure display is set to flex */
+  flex-direction: column;
+  justify-content: center; /* Vertically centers the content */
+  align-items: center; /* Horizontally centers the content in the column */
+
+
+  z-index: 1000;
+  position: fixed;
+  top: 56%; /* Shows the #banner */
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#close-button{
+  color: var(--RichBlack);
+  font-weight: bold;
+  font-size: var(--M_Font);
+
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+
+  background-color: white;
+
+  margin: var(--S_Margin);
+  width: 3vh;
+  height: 3vh;
+
+  border: 2px solid black;  
+}
+.info-header {
+  color: inherit;
+  font-size: var(--L_Font);
+
+  margin: 0 0 var(--M_Margin) 0;
+
+  align-self: flex-start
+}
+.info-rules{
+  margin: 0 0 var(--XXL_Margin) 0;
+  padding-left: 3vh;
+}
+.demo-container {
+  margin: 0;
+  padding: 0;
+  width: 99vw;
+  height: 99%;
+}
+@media screen and (min-width: 1024px) {
+  .demo-container {
+    width: 50vh; /* Smaller width for desktop */
+  }
+}
+
+
+
+/* Game message box */
+#message-box {
+  z-index: 1000;
+  position: fixed;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#message-box.hidden {
+  display: none;
+}
+#message-box.reveal {
+  animation: reveal 0.3s ease forwards;
+}
+#message-content {
+  color: var(--RichBlack);
+  font-size: 2.5vh;
+  text-align: center;
+
+  background-color: var(--BlushWhite);
+
+  border: none;
+  padding: 1vh 2vh 1vh 2vh;
+  border-radius: 2vh;
+}
